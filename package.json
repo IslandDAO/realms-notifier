@@ -1,0 +1,53 @@
+{
+  "name": "realms-notifier",
+  "scripts": {
+    "build": "tsc",
+    "ci": "npm run build",
+    "dev": "esrun --watch src/index.ts",
+    "docker:build": "docker build --progress=plain -t realms-notifier:latest .",
+    "docker:run": "docker run --rm --name realms-notifier -p 3000:3000 --env-file .env realms-notifier:latest",
+    "fmt": "prettier --write .",
+    "fmt:check": "prettier --check .",
+    "lint": "eslint .",
+    "start": "node ./dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "description": "Node.js script with gill (based on @solana/kit)",
+  "keywords": [
+    "gill",
+    "node",
+    "solana-kit"
+  ],
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "type": "module",
+  "license": "MIT",
+  "devDependencies": {
+    "@eslint/js": "^9.30.1",
+    "@types/bn.js": "^4.11.6",
+    "@types/node": "^24.0.12",
+    "@types/prompts": "^2.4.9",
+    "cross-env": "^7.0.3",
+    "eslint": "^9.30.1",
+    "globals": "^16.3.0",
+    "prettier": "^3.6.2",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.36.0"
+  },
+  "dependencies": {
+    "@solana/spl-governance": "^0.3.28",
+    "@solana/web3.js": "^1.98.2",
+    "axios": "^1.10.0",
+    "bignumber.js": "^9.3.1",
+    "bn.js": "^5.2.2",
+    "dayjs": "^1.11.13",
+    "discord.js": "^14.21.0",
+    "dotenv": "^17.2.0",
+    "esrun": "^3.2.30",
+    "gill": "0.10.2",
+    "install": "^0.13.0",
+    "kleur": "^4.1.5",
+    "prompts": "^2.4.2",
+    "ws": "^8.18.3"
+  }
+}
