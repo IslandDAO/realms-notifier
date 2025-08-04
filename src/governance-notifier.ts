@@ -40,7 +40,7 @@ async function runNotifier() {
     process.exit(1)
   }
   const realmInfo = await getCertifiedRealmInfo(REALM)
-  const realmUrl = `https://realms.today/dao/${escape(realmInfo?.displayName || REALM)}`
+  const realmUrl = `https://v2.realms.today/dao/${escape(REALM)}`
   const connection = new Connection(process.env.CLUSTER_URL!)
   console.log(`- getting all governance accounts for ${REALM}`)
   const governances = await getGovernanceAccounts(connection, realmInfo!.programId, Governance, [
@@ -169,7 +169,11 @@ export async function postProposalCreated({
 }) {
   const embed = new EmbedBuilder()
     .setTitle('🗳  Proposal Created')
-    .setDescription(`“**${proposal.account.name}**” proposal just opened for voting.`)
+    .setDescription(
+      `**${proposal.account.name}** proposal just opened for voting.
+        
+        Go vote: ${proposalUrl}`,
+    )
     .setURL(proposalUrl)
     .setThumbnail('https://raw.githubusercontent.com/solana-labs/governance-ui/main/public/img/logo-realms.png')
     .setColor(0x0099ff)
@@ -188,7 +192,7 @@ export async function postProposalEnding({
   const embed = new EmbedBuilder()
     .setTitle('⏰  24 Hours Left')
     .setDescription(
-      `“**${proposal.account.name}**” proposal will close for voting in 24 hours.
+      `**${proposal.account.name}** proposal will close for voting in 24 hours.
         
         Go vote if you haven't already: ${proposalUrl}`,
     )
