@@ -215,7 +215,8 @@ export async function postProposalEnded({
   const yesVotes = fmtTokenAmount(proposal.account.getYesVoteCount(), votingTokenDecimals)
   const noVotes = fmtTokenAmount(proposal.account.getNoVoteCount(), votingTokenDecimals)
 
-  const minVotesNeeded = 35000000
+  const minVotesNeeded =
+    proposal.account.governingTokenMint.toBase58() === 'Ds52CDgqdWbTWsua1hgT3AuSSy4FNx2Ezge1br3jQ14a' ? 35000000 : 3
 
   const quorumReached = yesVotes >= minVotesNeeded
   const isSuccess = yesVotes > noVotes && quorumReached
