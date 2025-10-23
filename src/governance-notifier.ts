@@ -211,12 +211,15 @@ export async function postProposalEnded({
   proposalUrl: string
   proposal: ProgramAccount<Proposal>
 }) {
-  const votingTokenDecimals = 6
+  // Set decimals based on governingTokenMint
+  const isCommunityToken =
+    proposal.account.governingTokenMint.toBase58() === 'Ds52CDgqdWbTWsua1hgT3AuSSy4FNx2Ezge1br3jQ14a'
+  const votingTokenDecimals = isCommunityToken ? 6 : 0
+
   const yesVotes = fmtTokenAmount(proposal.account.getYesVoteCount(), votingTokenDecimals)
   const noVotes = fmtTokenAmount(proposal.account.getNoVoteCount(), votingTokenDecimals)
 
-  const minVotesNeeded =
-    proposal.account.governingTokenMint.toBase58() === 'Ds52CDgqdWbTWsua1hgT3AuSSy4FNx2Ezge1br3jQ14a' ? 35000000 : 3
+  const minVotesNeeded = isCommunityToken ? 35000000 : 3
 
   const quorumReached = yesVotes >= minVotesNeeded
   const isSuccess = yesVotes > noVotes && quorumReached
