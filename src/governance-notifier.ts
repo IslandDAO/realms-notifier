@@ -11,6 +11,7 @@ import { getCertifiedRealmInfo } from './utils/api.js'
 import { fmtTokenAmount } from './utils/formatting.js'
 import { formatNumber } from './utils/formatNumber.js'
 import { accountsToPubkeyMap } from './utils/accounts.js'
+import { getVoteLabel } from './utils/voteType.js'
 import { EmbedBuilder, WebhookClient } from 'discord.js'
 
 export const fiveMinutesSeconds = 5 * 60
@@ -167,8 +168,9 @@ export async function postProposalCreated({
   proposalUrl: string
   proposal: ProgramAccount<Proposal>
 }) {
+  const voteLabel = getVoteLabel(proposal)
   const embed = new EmbedBuilder()
-    .setTitle('🗳  Proposal Created')
+    .setTitle(`🗳  Proposal Created ${voteLabel}`)
     .setDescription(
       `**${proposal.account.name}** proposal just opened for voting.
         
@@ -189,8 +191,9 @@ export async function postProposalEnding({
   proposalUrl: string
   proposal: ProgramAccount<Proposal>
 }) {
+  const voteLabel = getVoteLabel(proposal)
   const embed = new EmbedBuilder()
-    .setTitle('⏰  24 Hours Left')
+    .setTitle(`⏰  24 Hours Left ${voteLabel}`)
     .setDescription(
       `**${proposal.account.name}** proposal will close for voting in 24 hours.
         
@@ -211,6 +214,7 @@ export async function postProposalEnded({
   proposalUrl: string
   proposal: ProgramAccount<Proposal>
 }) {
+  const voteLabel = getVoteLabel(proposal)
   // Set decimals based on governingTokenMint
   const isCommunityToken =
     proposal.account.governingTokenMint.toBase58() === 'Ds52CDgqdWbTWsua1hgT3AuSSy4FNx2Ezge1br3jQ14a'
@@ -226,7 +230,7 @@ export async function postProposalEnded({
   const status = isSuccess ? '✅ Success' : !quorumReached ? '❌ Defeated - Quorum Not Reached' : '❌ Defeated'
 
   const embed = new EmbedBuilder()
-    .setTitle('⚖️  Proposal Ended')
+    .setTitle(`⚖️  Proposal Ended ${voteLabel}`)
     .setDescription(`**${proposal.account.name}**\n\nStatus: **${status}**`)
     .addFields(
       { name: '\u200B', value: '\u200B' },
